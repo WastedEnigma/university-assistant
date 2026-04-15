@@ -2,6 +2,7 @@ package com.ai.universityassistant.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
@@ -34,6 +35,7 @@ import com.ai.universityassistant.repository.LecturerRepository;
 import com.ai.universityassistant.repository.StudentRepository;
 import com.ai.universityassistant.repository.projection.CourseGradeProjection;
 import com.ai.universityassistant.repository.projection.CourseProjection;
+import com.ai.universityassistant.repository.projection.DepartmentStatsProjection;
 import com.ai.universityassistant.repository.projection.PersonSearchProjection;
 import com.ai.universityassistant.repository.projection.StudentProjection;
 
@@ -63,12 +65,10 @@ class UniversityServiceTest {
         head.setFullName("Dr. Smith");
         dept.setHead(head);
 
-        when(departmentRepository.findByNameFuzzy("Computer Science"))
-                .thenReturn(Optional.of(dept));
-        when(studentRepository.countByDepartmentName("Computer Science"))
-                .thenReturn(150L);
-        when(lecturerRepository.getAverageSalaryByDepartment("Computer Science"))
-                .thenReturn(Optional.of(new BigDecimal(75000.0)));
+        DepartmentStatsProjection deptStats = mockDeptStats(dept.getName(), head.getFullName());
+
+        when(departmentRepository.findAggregatedStats("Computer Science"))
+                .thenReturn(Optional.of(deptStats));
 
         DepartmentStatsDTO result = universityService.getDepartmentStats("Computer Science");
 
@@ -81,7 +81,7 @@ class UniversityServiceTest {
 
     @Test
     void testGetDepartmentStats_DepartmentNotFound() {
-        when(departmentRepository.findByNameFuzzy("NonExistent"))
+        when(departmentRepository.findAggregatedStats("NonExistent"))
                 .thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class,
@@ -92,18 +92,15 @@ class UniversityServiceTest {
     void testGetDepartmentStats_WithNullHead() {
         Department dept = new Department();
         dept.setName("Engineering");
-        dept.setHead(null);
 
-        when(departmentRepository.findByNameFuzzy("Engineering"))
-                .thenReturn(Optional.of(dept));
-        when(studentRepository.countByDepartmentName("Engineering"))
-                .thenReturn(200L);
-        when(lecturerRepository.getAverageSalaryByDepartment("Engineering"))
-                .thenReturn(Optional.of(new BigDecimal(80000.0)));
+        DepartmentStatsProjection deptStats = mockDeptStats(dept.getName(), null);
+
+        when(departmentRepository.findAggregatedStats("Engineering"))
+                .thenReturn(Optional.of(deptStats));
 
         DepartmentStatsDTO result = universityService.getDepartmentStats("Engineering");
 
-        assertEquals("None", result.headName());
+        assertNull(result.headName());
     }
 
     @Test
@@ -277,6 +274,31 @@ class UniversityServiceTest {
             public BigDecimal getGrade() {
                 return null;
             }
+        };
+    }
+
+    private DepartmentStatsProjection mockDeptStats(String name, String headName) {
+        return new DepartmentStatsProjection() {
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public String getHeadName() {
+                return headName;
+            }
+
+            @Override
+            public Long getStudentCount() {
+                return 150L;
+            }
+
+            @Override
+            public BigDecimal getAvgSalary() {
+                return new BigDecimal(75000.0);
+            }
+
         };
     }
 }

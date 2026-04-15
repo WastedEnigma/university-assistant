@@ -35,11 +35,11 @@ public class GlobalExceptionHandling {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-//     @ExceptionHandler(Exception.class)
-//     public ResponseEntity<ErrorResponse> handleGeneralException() {
-//         var error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-//                 "Something went wrong.", System.currentTimeMillis());
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(DataNotFoundException ex) {
+        var error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage(),
+                System.currentTimeMillis());
 
-//         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-//     }
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
 }

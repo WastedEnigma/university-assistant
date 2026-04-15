@@ -11,7 +11,7 @@ import com.ai.universityassistant.dto.CourseGradeDTO;
 import com.ai.universityassistant.dto.DepartmentStatsDTO;
 import com.ai.universityassistant.dto.PersonSearchDTO;
 import com.ai.universityassistant.dto.StudentDTO;
-import com.ai.universityassistant.entity.Lecturer;
+import com.ai.universityassistant.exception.DataNotFoundException;
 import com.ai.universityassistant.repository.CourseRepository;
 import com.ai.universityassistant.repository.DepartmentRepository;
 import com.ai.universityassistant.repository.LecturerRepository;
@@ -35,26 +35,14 @@ public class UniversityService {
     public DepartmentStatsDTO getDepartmentStats(String deptName) {
         log.info("AI called getDepartmentStats with: {}", deptName);
 
-        var department = departmentRepository.findByNameFuzzy(deptName)
-                .orElseThrow(() -> new RuntimeException("Department not found."));
+        var aggregatedStats = departmentRepository.findAggregatedStats(deptName)
+                    .orElseThrow(() -> new DataNotFoundException("Aggregated stats not found"));
 
-        String headName = resolveHeadName(department.getHead());
-        long studentCount = studentRepository.countByDepartmentName(deptName);
-
-        var averageSalaryByDepartment = lecturerRepository
-                .getAverageSalaryByDepartment(department.getName())
-                .orElseThrow(() -> new RuntimeException("Avg salary not found."));
-
-        log.info("Head of department: {}", headName);
-        log.info("Student count: {}", studentCount);
-        log.info("Avg salary: {}", averageSalaryByDepartment);
-
-        return DepartmentStatsDTO.builder()
-                .name(department.getName())
-                .headName(headName)
-                .studentCount(studentCount)
-                .avgSalary(averageSalaryByDepartment)
-                .build();
+        log.info("Head of department: {}", aggregatedStats.getHeadName());
+        log.info("Student count: {}", aggregatedStats.getStudentCount());
+        log.info("Avg salary: {}", aggregatedStats.getAvgSalary());            
+        
+        return DepartmentStatsDTO.of(aggregatedStats);
     }
 
     // Tool 2: searchPeople
@@ -101,7 +89,7 @@ public class UniversityService {
         log.info("AI called getStudentGrades with student ID: {}", studentId);
 
         if (!studentRepository.existsById(studentId)) {
-            throw new RuntimeException("User not found");
+            throw new DataNotFoundException("User not found");
         }
 
         var studentGrades = studentRepository.findGradesByStudentId(studentId);
@@ -122,9 +110,5 @@ public class UniversityService {
         log.info("Database returned {} results.", averageSalaryByDepartments.size());
 
         return lecturerRepository.getAverageSalaryByDepartments();
-    }
-
-    private String resolveHeadName(Lecturer head) {
-        return head != null ? head.getFullName() : "None";
     }
 }
