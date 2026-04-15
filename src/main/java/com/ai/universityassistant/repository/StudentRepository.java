@@ -58,6 +58,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         List<StudentProjection> findTopByCourse(
                 @Param("courseTitle") String courseTitle, 
                 @Param("limit") int limit);
-
-        long countByDepartmentName(String deptName);
 }
