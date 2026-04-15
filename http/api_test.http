@@ -1,0 +1,49 @@
+@host = http://localhost:8080
+
+### 1. Ask for top students
+POST {{host}}/api/ask
+Content-Type: application/json
+
+{
+    "message": "Get top 3 students in Logic & Computation"
+}
+
+### 2. Ask to search for person
+POST {{host}}/api/ask
+Content-Type: application/json
+
+{
+    "message": "Search for Charlie Root"
+}
+
+### 3. Ask for grades by student ID
+POST {{host}}/api/ask
+Content-Type: application/json
+
+{
+    "message": "Get grades for student with ID: 2"
+}
+
+### 4. Ask for department stats information
+POST {{host}}/api/ask
+Content-Type: application/json
+
+{
+    "message": "What are the stats for Computer Science?"
+}
+
+### 5. Ask for all courses by led by professor with name
+POST {{host}}/api/ask
+Content-Type: application/json
+
+{
+    "message": "I want all courses led by Grace Hopper"
+}
+
+### 6. Ask for all departments average salaries
+POST {{host}}/api/ask
+Content-Type: application/json
+
+{
+    "message": "What are all departments average salaries?"
+}

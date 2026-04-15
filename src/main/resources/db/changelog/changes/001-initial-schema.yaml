@@ -1,0 +1,183 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: otokarenko
+      changes:
+        - createTable:
+            tableName: degrees
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: title
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+        - createTable:
+            tableName: lecturers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: degree_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_lecturer_degree
+                    referencedTableName: degrees
+                    referencedColumnNames: id
+              - column:
+                  name: salary
+                  type: DECIMAL(10,2)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: departments
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: head_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_dept_head
+                    referencedTableName: lecturers
+                    referencedColumnNames: id
+
+        - createTable:
+            tableName: students
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: department_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_student_dept
+                    referencedTableName: departments
+                    referencedColumnNames: id
+              - column:
+                  name: gpa
+                  type: DECIMAL(3,2)
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0.0
+
+        - createTable:
+            tableName: lecturer_departments
+            columns:
+              - column:
+                  name: lecturer_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_ld_lecturer
+                    referencedTableName: lecturers
+                    referencedColumnNames: id
+              - column:
+                  name: department_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_ld_dept
+                    referencedTableName: departments
+                    referencedColumnNames: id
+
+        - createTable:
+            tableName: courses
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: credits
+                  type: INT
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: course_lecturers
+            columns:
+              - column:
+                  name: course_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_cl_course
+                    referencedTableName: courses
+                    referencedColumnNames: id
+              - column:
+                  name: lecturer_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_cl_lecturer
+                    referencedTableName: lecturers
+                    referencedColumnNames: id
+
+        - createTable:
+            tableName: enrollments
+            columns:
+              - column: 
+                  name: student_id 
+                  type: BIGINT 
+                  constraints: 
+                    nullable: false 
+                    foreignKeyName: fk_enrol_student
+                    referencedTableName: students
+                    referencedColumnNames: id 
+              - column: 
+                  name: course_id 
+                  type: BIGINT 
+                  constraints: 
+                    nullable: false 
+                    foreignKeyName: fk_enrol_course 
+                    referencedTableName: courses
+                    referencedColumnNames: id
+              - column: 
+                  name: grade
+                  type: DECIMAL(3,2)

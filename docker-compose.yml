@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: university-db
+    environment:
+      - POSTGRES_DB=university_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d university_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    # This entrypoint ensures the model is downloaded on startup
+    entrypoint: [ "/bin/sh", "-c", "ollama serve & sleep 10 && ollama pull llama3.2:3b && wait" ]
+
+  universityassistant:
+    build: . # Assumes your Dockerfile is in the same directory
+    image: university-assistant:latest
+    container_name: universityassistant-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/university_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_AI_OLLAMA_BASE_URL=http://ollama:11434  # <--- MUST MATCH SERVICE NAME
+      - SPRING_AI_OLLAMA_CHAT_OPTIONS_MODEL=llama3.2:3b
+      - SPRING_AI_OLLAMA_CHAT_OPTIONS_NUM_PREDICT=500
+    depends_on:
+      postgres:
+        condition: service_healthy # Wait for DB to be "Healthy," not just "Started"
+      ollama:
+        condition: service_started
+
+volumes:
+  postgres_data:
+  ollama_data:

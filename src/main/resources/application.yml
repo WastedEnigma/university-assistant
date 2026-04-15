@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: universityassistant
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/university_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate # Let Liquibase handle the schema
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  ai:
+    ollama:
+      base-url: ${SPRING_AI_OLLAMA_BASE_URL:http://localhost:11434}
+      chat:
+        options:
+          model: ${SPRING_AI_OLLAMA_CHAT_OPTIONS_MODEL:llama3.2:3b} # lightweight LLM model sufficient for the task
+          num-predict: ${SPRING_AI_OLLAMA_CHAT_OPTIONS_NUM_PREDICT:500} # Limit output tokens to prevent "hanging"

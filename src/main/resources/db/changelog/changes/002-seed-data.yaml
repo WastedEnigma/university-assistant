@@ -1,0 +1,551 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: otokarenko
+      changes:
+        # Degrees
+        - insert:
+            tableName: degrees
+            columns:
+              - column:
+                  name: title
+                  value: "Assistant"
+        - insert:
+            tableName: degrees
+            columns:
+              - column:
+                  name: title
+                  value: "Associate Professor"
+        - insert:
+            tableName: degrees
+            columns:
+              - column:
+                  name: title
+                  value: "Professor"
+
+        # Departments
+        - insert:
+            tableName: departments
+            columns:
+              - column:
+                  name: name
+                  value: "Computer Science"
+        - insert:
+            tableName: departments
+            columns:
+              - column:
+                  name: name
+                  value: "Applied Mathematics"
+        - insert:
+            tableName: departments
+            columns:
+              - column:
+                  name: name
+                  value: "History"
+        - insert:
+            tableName: departments
+            columns:
+              - column:
+                  name: name
+                  value: "Philosophy"
+
+        # Lecturers
+        - insert:
+            tableName: lecturers
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: full_name
+                  value: "Alan Willis"
+              - column:
+                  name: degree_id
+                  value: 3
+              - column:
+                  name: salary
+                  value: 95000.00
+        - insert:
+            tableName: lecturers
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: full_name
+                  value: "Amanda Lovelace"
+              - column:
+                  name: degree_id
+                  value: 2
+              - column:
+                  name: salary
+                  value: 85000.00
+        - insert:
+            tableName: lecturers
+            columns:
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: full_name
+                  value: "John von Neumann"
+              - column:
+                  name: degree_id
+                  value: 3
+              - column:
+                  name: salary
+                  value: 110000.00
+        - insert:
+            tableName: lecturers
+            columns:
+              - column:
+                  name: id
+                  value: 4
+              - column:
+                  name: full_name
+                  value: "Grace Hopper"
+              - column:
+                  name: degree_id
+                  value: 3
+              - column:
+                  name: salary
+                  value: 105000.00
+        - insert:
+            tableName: lecturers
+            columns:
+              - column:
+                  name: id
+                  value: 5
+              - column:
+                  name: full_name
+                  value: "Linus Torvalds"
+              - column:
+                  name: degree_id
+                  value: 1
+              - column:
+                  name: salary
+                  value: 65000.00
+        - insert:
+            tableName: lecturers
+            columns:
+              - column:
+                  name: id
+                  value: 6
+              - column:
+                  name: full_name
+                  value: "Adam Morris"
+              - column:
+                  name: degree_id
+                  value: 2
+              - column:
+                  name: salary
+                  value: 46000.00
+
+        # Membership
+        - insert:
+            tableName: lecturer_departments
+            columns: 
+              - column:
+                  name: lecturer_id
+                  value: 1
+              - column:
+                  name: department_id
+                  value: 1
+        - insert:
+            tableName: lecturer_departments
+            columns: 
+              - column:
+                  name: lecturer_id
+                  value: 1
+              - column:
+                  name: department_id
+                  value: 4
+        - insert:
+            tableName: lecturer_departments
+            columns: 
+              - column:
+                  name: lecturer_id
+                  value: 1
+              - column:
+                  name: department_id
+                  value: 2
+        - insert:
+            tableName: lecturer_departments
+            columns: 
+              - column:
+                  name: lecturer_id
+                  value: 2
+              - column:
+                  name: department_id
+                  value: 1
+        - insert:
+            tableName: lecturer_departments
+            columns: 
+              - column:
+                  name: lecturer_id
+                  value: 3
+              - column:
+                  name: department_id
+                  value: 2
+        - insert:
+            tableName: lecturer_departments
+            columns: 
+              - column:
+                  name: lecturer_id
+                  value: 4
+              - column:
+                  name: department_id
+                  value: 1
+        - insert:
+            tableName: lecturer_departments
+            columns: 
+              - column:
+                  name: lecturer_id
+                  value: 5
+              - column:
+                  name: department_id
+                  value: 1
+        - insert:
+            tableName: lecturer_departments
+            columns: 
+              - column:
+                  name: lecturer_id
+                  value: 5
+              - column:
+                  name: department_id
+                  value: 2
+        - insert:
+            tableName: lecturer_departments
+            columns: 
+              - column:
+                  name: lecturer_id
+                  value: 6
+              - column:
+                  name: department_id
+                  value: 3
+
+        # Leadership
+        - update:
+            tableName: departments
+            columns:
+              - column:
+                  name: head_id
+                  value: 1
+            where: "name = 'Computer Science'"
+        - update:
+            tableName: departments
+            columns:
+              - column:
+                  name: head_id
+                  value: 6
+            where: "name = 'History'"
+
+        # Students
+        - insert:
+            tableName: students
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: full_name
+                  value: "Alice Freeman"
+              - column:
+                  name: department_id
+                  value: 1
+              - column:
+                  name: gpa
+                  value: 3.9
+        - insert:
+            tableName: students
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: full_name
+                  value: "Bob Miller"
+              - column:
+                  name: department_id
+                  value: 1
+              - column:
+                  name: gpa
+                  value: 3.5
+        - insert:
+            tableName: students
+            columns:
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: full_name
+                  value: "Charlie Root"
+              - column:
+                  name: department_id
+                  value: 2
+              - column:
+                  name: gpa
+                  value: 3.1
+        - insert:
+            tableName: students
+            columns:
+              - column:
+                  name: id
+                  value: 4
+              - column:
+                  name: full_name
+                  value: "David Webb"
+              - column:
+                  name: department_id
+                  value: 1
+              - column:
+                  name: gpa
+                  value: 3.95
+        - insert:
+            tableName: students
+            columns:
+              - column:
+                  name: id
+                  value: 5
+              - column:
+                  name: full_name
+                  value: "Elena Gilbert"
+              - column:
+                  name: department_id
+                  value: 2
+              - column:
+                  name: gpa
+                  value: 3.8
+        - insert:
+            tableName: students
+            columns:
+              - column:
+                  name: id
+                  value: 6
+              - column:
+                  name: full_name
+                  value: "Frank Castle"
+              - column:
+                  name: department_id
+                  value: 1
+              - column:
+                  name: gpa
+                  value: 2.8
+        - insert:
+            tableName: students
+            columns:
+              - column:
+                  name: id
+                  value: 7
+              - column:
+                  name: full_name
+                  value: "Martin Reeve"
+              - column:
+                  name: department_id
+                  value: 1
+              - column:
+                  name: gpa
+                  value: 3.5
+
+        # Courses
+        - insert:
+            tableName: courses
+            columns: 
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: title
+                  value: "Algorithms 101"
+              - column:
+                  name: credits
+                  value: 5
+        - insert:
+            tableName: courses
+            columns: 
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: title
+                  value: "Logic & Computation"
+              - column:
+                  name: credits
+                  value: 4
+        - insert:
+            tableName: courses
+            columns: 
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: title
+                  value: "World History"
+              - column:
+                  name: credits
+                  value: 3
+        - insert:
+            tableName: courses
+            columns: 
+              - column:
+                  name: id
+                  value: 4
+              - column:
+                  name: title
+                  value: "Metaphysics"
+              - column:
+                  name: credits
+                  value: 6
+
+        # Course Lecturers
+        - insert:
+            tableName: course_lecturers
+            columns: 
+              - column:
+                  name: course_id
+                  value: 1
+              - column:
+                  name: lecturer_id
+                  value: 4
+
+        - insert:
+            tableName: course_lecturers
+            columns: 
+              - column:
+                  name: course_id
+                  value: 2
+              - column:
+                  name: lecturer_id
+                  value: 5
+
+        - insert:
+            tableName: course_lecturers
+            columns: 
+              - column:
+                  name: course_id
+                  value: 4
+              - column:
+                  name: lecturer_id
+                  value: 1
+
+        - insert:
+            tableName: course_lecturers
+            columns: 
+              - column:
+                  name: course_id
+                  value: 3
+              - column:
+                  name: lecturer_id
+                  value: 6
+
+        # Enrollments
+        - insert:
+            tableName: enrollments
+            columns: 
+              - column:
+                  name: student_id
+                  value: 4
+              - column:
+                  name: course_id
+                  value: 1
+              - column:
+                  name: grade
+                  value: 3.9
+        - insert:
+            tableName: enrollments
+            columns: 
+              - column:
+                  name: student_id
+                  value: 5
+              - column:
+                  name: course_id
+                  value: 2
+              - column:
+                  name: grade
+                  value: 3.7
+        - insert:
+            tableName: enrollments
+            columns: 
+              - column:
+                  name: student_id
+                  value: 3
+              - column:
+                  name: course_id
+                  value: 2
+              - column:
+                  name: grade
+                  value: 3.3
+        - insert:
+            tableName: enrollments
+            columns: 
+              - column:
+                  name: student_id
+                  value: 2
+              - column:
+                  name: course_id
+                  value: 2
+              - column:
+                  name: grade
+                  value: 3.9
+        - insert:
+            tableName: enrollments
+            columns: 
+              - column:
+                  name: student_id
+                  value: 1
+              - column:
+                  name: course_id
+                  value: 1
+              - column:
+                  name: grade
+                  value: 3.8
+        - insert:
+            tableName: enrollments
+            columns: 
+              - column:
+                  name: student_id
+                  value: 2
+              - column:
+                  name: course_id
+                  value: 4
+              - column:
+                  name: grade
+                  value: 3.2
+        - insert:
+            tableName: enrollments
+            columns: 
+              - column:
+                  name: student_id
+                  value: 4
+              - column:
+                  name: course_id
+                  value: 3
+              - column:
+                  name: grade
+                  value: 3.3
+        - insert:
+            tableName: enrollments
+            columns: 
+              - column:
+                  name: student_id
+                  value: 7
+              - column:
+                  name: course_id
+                  value: 1
+              - column:
+                  name: grade
+                  value: 3.12
+
+        # Fix Postgres Sequences
+        - sql:
+            dbms: postgresql
+            splitStatements: true
+            sql: |
+              DO $$ 
+              BEGIN
+                EXECUTE 'ALTER SEQUENCE lecturers_id_seq RESTART WITH ' || (SELECT COALESCE(MAX(id), 0) + 1 FROM lecturers);
+                EXECUTE 'ALTER SEQUENCE students_id_seq RESTART WITH ' || (SELECT COALESCE(MAX(id), 0) + 1 FROM students);
+                EXECUTE 'ALTER SEQUENCE courses_id_seq RESTART WITH ' || (SELECT COALESCE(MAX(id), 0) + 1 FROM courses);
+                EXECUTE 'ALTER SEQUENCE departments_id_seq RESTART WITH ' || (SELECT COALESCE(MAX(id), 0) + 1 FROM departments);
+                EXECUTE 'ALTER SEQUENCE degrees_id_seq RESTART WITH ' || (SELECT COALESCE(MAX(id), 0) + 1 FROM degrees);
+              END $$;
